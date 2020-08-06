@@ -152,4 +152,4 @@ must be in the project directory for the imports to work.
         db.drop_all()        
 
 11. Package structure and its advantages
-
+    **** to remove .vscode from git: git rm --cached .vscode/settings.json****
