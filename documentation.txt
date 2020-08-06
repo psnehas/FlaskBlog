@@ -10,6 +10,29 @@
     pip install Flask
 6. Install wt-forms
     pip install flask-wtf
+7. Install flask-sqlalchemy for database connectivity
+    pip install flask-sqlalchemy
+
+===========================================
+****Database creation and deletion****
+must be in the project directory for the imports to work.
+1. Intiate python terminal
+2. from flaskblog import db     #flaskblog is our application file and db is the sqlalchemy db instance that we created.
+3. create database.
+    db.create_all()
+4. We can add data to the database models both using command line and using the application.
+    For command line,
+    1. from flaskblog import User, Post
+    2. create user instance:
+        user_1 = User(username = 'Corey', email='C@gmail.com', password='password') 
+    3. add the user to db
+        add changes
+        db.session.add(user_1) 
+        commit changes
+        db.session.commit()
+5. Delete all rows and drop all tables:
+    db.drop_all()
+
 =======================================
 ****Steps to run the files***
     python flaskblog.py
@@ -39,4 +62,94 @@
     - for secret key we used secrets.token_hex(16) to generate a 16bit token for the application.
     - form.hidden_tag() used to add a CSRF (Cross Site Request Forgery) token to protect qpplication from attacks
     - form validators, error handlers, different classes for form fields
+
+5. Database support - SqlAlchemy - popular ORM(Object Relational Mapper - it makes it easy for us to connect to database and use it in an object oriented way. Can use different databases without changing your python code.)
+    will be using SQLite for database during development and switch to PostgreSQL for production
+    there is a regular sqlalchemy package but flask-sqlalchemy is flask specific package that provides support for several defaults and helpers for the application.
+    with sqlite, we can specify relative path with three forward slashes in the uri. (sqlite:///) 
+    * a great thing about sqlalchemy is we can represent our database structure as classes. Those classes are called models.
     
+    #create user class to hold all users. This imports db.Model 
+    class User(db.Model):
+        # columns for the table : column_name = db.Column(column_type, primary_key[optional])
+        id = db.Column(db.Integer,primary_key = True)
+
+6. Magic methods or Dunder methods: https://medium.com/python-features/magic-methods-demystified-3c9e93144bf7
+    Dunder- Double underscores
+    Commonly used for operator overloading. e.g., __init__, __len__, __repr__, __add__ etc.,
+
+    def __repr__()
+    This method determines how our object will be printed when ever we print it. Another similar method is __str__
+    * basically to provide the user the rights to determine how he wants an object to be printed.
+
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+        here datetime.utcnow means if the date_posted field is empty, the field will have a default current time assigned to it.
+        datetime.utcnow() would trigger the function to execute and the default would have a date instead of a function that generates date. We want the default to be a function that executes and not a hard value indicating the current time.
+
+7. User and Post models will have a one to many relationship because the users will be the authors of the post. One user multiple Posts.
+    posts = db.relationship('Post', backref='author',lazy=True)
+    defines a relationship btw User and Post model. Signifies that the posts attribute under User model references the Post model's author attribute.
+    backref provides the Post model's attribute to which the User model refers.
+    lazy defines when sqlalchemy loads the data from database. True means sqlalchemy will load the data as necessary in one go. Convenient because: with this relationship we will be able to use this attribute to get all of the posts created by an individual user at once.
+    
+    *** Note that this line (posts = db.relationship('Post', backref='author',lazy=True)) does not create a column in User model. It just specifies the relationship to run a query in the background to fetch all the posts written by a particular user.
+
+8. 
+    posts = db.relationship('Post', backref='author',lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    uppercase Post : referencing the actual Post class
+    lowercase user : referencing the table name and column name
+    * So by default, the User model has the tablename set to user(lowercase) and the Post model will have a table name set to post(lowercase)
+    We can set our own table name using tablename attribute.
+    * We create database after our data models are ready. similar to having the schema ready before we actually create tables.
+
+9. Database creation using command shell/terminal
+
+    user_1 = User(username = 'Corey', email='C@gmail.com', password='password') 
+        -> not setting id and image_file becuase id is pk and is autopopulated with unique values and image_file has a default value.
+
+    db.session.add(user_1) 
+        -> this line does not actually add the user to database. We just notified the db that we have a change to make. We can have several such changes and commit those changes to the database.
+    we can create multiple users as such and commit.
+        user_2 = User(username = 'John', email='J@gmail.com', password='password')
+        db.session.add(user_2)
+    Now that we have all the changes resady, we can commit.
+    db.session.commit()
+
+10. Common Database queries:
+    - User.query.all() -> returns list of all the users.
+        >>> User.query.all()
+            [User('Corey','C@gmail.com','default.jpg'), User('John','J@gmail.com','default.jpg')]
+    - User.query.first() -> returns first user in the list
+        >>> User.query.first()
+            User('Corey','C@gmail.com','default.jpg')
+    - User.query.filter_by(username='Corey').all() -> returns all users with username Corey
+    - User.query.filter_by(username='Corey').first()
+        >>> user = User.query.filter_by(username='Corey').first()
+        >>> user.id
+            1
+        >>> user = User.query.get(1) -> returns a user with id=1
+        >>> user
+            User('Corey','C@gmail.com','default.jpg')
+        
+        >>> post_1 = Post(title='Blog1',  content='First blog', user_id=user.id)
+        >>> post_2 = Post(title='Blog2',  content='second  blog', user_id=user.id) 
+        >>> db.session.add(post_1)
+        >>> db.session.add(post_2)
+        >>> db.session.commit()
+        >>> user.posts
+            [User('Blog1','2020-08-06 19:10:32.014352'), User('Blog2','2020-08-06 19:10:32.020516')]
+        
+        >>> post = Post.query.first()
+        >>> post
+            User('Blog1','2020-08-06 19:10:32.014352')
+        >>> post.user_id -> has access to the user id 
+            1
+        >>> post.author -> can access the entire user object who created the post using the backref relationship author.
+            User('Corey','C@gmail.com','default.jpg')
+
+    - Delete all the rows and drop all the tables:
+        db.drop_all()        
+
+11. Package structure and its advantages
+
