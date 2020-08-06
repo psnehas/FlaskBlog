@@ -1,0 +1,42 @@
+****Installation Steps:****
+1. Create flaskblog
+    mkdir flaskblog
+2. cd flaskblog
+3. create environment
+    python3 -m venv venv
+4. activate the environment
+    venv\Scripts\activate
+5. Install flask
+    pip install Flask
+6. Install wt-forms
+    pip install flask-wtf
+=======================================
+****Steps to run the files***
+    python flaskblog.py
+=======================================
+**** Imp Notes****
+
+* in flask html files need to be located in templates folder 
+* and the static files like css and javascript files need to be in static folder.
+
+1. app = Flask(__name__)
+    Instantiated Flask application in app
+    Here __name__ is special variable in python which is just the name of the module. Basically, that is to let python know where to start execution from; know about the static files and the main method. This is similar to writing p.s.v.main() as in Java.
+    
+    @app.route('/')
+    def hello():
+        return 'Hello, World!'
+    In Flask, routes are created using route decorators - to add addittional functionality to existing functions.
+    In this case, app.route decorator will handle all of the complicated backend stuff and simply allow us to write a function that returns the information to be shown on our website for '/' route which represents a root page of a website. Here the function hello() returns "Hello world" when a user lands on the root page.
+
+2. Template inheritance
+    Having all the repeated code lines in a single file so that there is only one place to make changes. This frees the files from having repeated code and have only code that is unique to their respective pages.
+
+3. url-for:
+    function that will find the exact location of the routes for us so that we don't need to worry about it in the background.
+
+4. wtforms
+    - for secret key we used secrets.token_hex(16) to generate a 16bit token for the application.
+    - form.hidden_tag() used to add a CSRF (Cross Site Request Forgery) token to protect qpplication from attacks
+    - form validators, error handlers, different classes for form fields
+    
