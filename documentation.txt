@@ -36,6 +36,11 @@ must be in the project directory for the imports to work.
 =======================================
 ****Steps to run the files***
     python flaskblog.py
+
+**** to remove .vscode from git: git rm --cached .vscode/settings.json****
+
+After restructuring code into packages, to run the application,
+    python run.py
 =======================================
 **** Imp Notes****
 
@@ -152,4 +157,9 @@ must be in the project directory for the imports to work.
         db.drop_all()        
 
 11. Package structure and its advantages
-    **** to remove .vscode from git: git rm --cached .vscode/settings.json****
+        * Circular import error: when python encounters "from models import User,Post" the control shifts to models.py file where the second line is "from flaskblog import db" which takes the control back to flaskblog.py and execution begins again from the first line until the models.py import is called. An interdependency is created here between the two files leading to a circular loop. This is because, for the first time my flaskblog.py is considered as the __main__ file by the compiler and the second time as flaskblog.py.
+        So if we do "from __main__ import db" in models.py, it eliminates the circular import error. But throws "cannot import name db" error. This is because at that point when models.py imports db, the instance is not yet created. We can perform a work around for this case by listing the "from models import User,Post" after the db instance is created(db = SqlAlchemy(app)) but this ugly alternative is bound to fail when we try accessing the database using commandline. Because, in command line, the __main__ isn't the flaskblog.py anymore.. So this quick fix isn't sufficient.
+        Thus we have to segregate the code into packages that will solve such connectivity problems as we will not have to run flaskblog directly. That way we eliminate all the import issues.
+
+        In order to tell python that your directory is a package, we need an __init__ file that has the same name as the application itself.
+
