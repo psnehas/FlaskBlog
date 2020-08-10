@@ -202,8 +202,21 @@ After restructuring code into packages, to run the application,
 19. next_page = request.args.get('next')
     args is a dictionary but if we access args[keys] then it will throw error if the key is not found. So use args.get() because this returns None if the key does not exist in the dictionary.
 
+20. added features: update profile , update image, resize image using Pillow, added validators for accepted image types.
+    * imp: using the enctype='multipart/form-data' to be able to display any issues that might occur with the image uploads.
+    * also added save picture to database feature. To avoid conflicts with same picture name, converted the filenames to hex formats using secrets. Then to extract the file type that the user used, we used os library that helps us grab the input file name along with extension and then grab the type.
+     _, fext = os.path.splitext(form_picture.filename)
+     fext is the file extension that we extracted.
 
+     inorder to store the picture under the user_profile_pics folder, we use the line, 
+     picture_path = os.path.join(app.root_path, 'static/user_profile_pics', pict_fn) where pict_fn is the hex_filename.fext
 
+     i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    are for resizing the file to 125x125
+
+    also made changes to the forms.py to include the image field in the userAccount form.
+    
 
 
 
