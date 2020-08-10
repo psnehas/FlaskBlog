@@ -12,6 +12,10 @@
     pip install flask-wtf
 7. Install flask-sqlalchemy for database connectivity
     pip install flask-sqlalchemy
+8. Install flask-bcrypt to hash passwords
+    pip install flask-bcrypt
+9. Install flask-login to handle login errors
+    pip install flask-login
 
 ===========================================
 ****Database creation and deletion****
@@ -161,5 +165,47 @@ After restructuring code into packages, to run the application,
         So if we do "from __main__ import db" in models.py, it eliminates the circular import error. But throws "cannot import name db" error. This is because at that point when models.py imports db, the instance is not yet created. We can perform a work around for this case by listing the "from models import User,Post" after the db instance is created(db = SqlAlchemy(app)) but this ugly alternative is bound to fail when we try accessing the database using commandline. Because, in command line, the __main__ isn't the flaskblog.py anymore.. So this quick fix isn't sufficient.
         Thus we have to segregate the code into packages that will solve such connectivity problems as we will not have to run flaskblog directly. That way we eliminate all the import issues.
 
-        In order to tell python that your directory is a package, we need an __init__ file that has the same name as the application itself.
+        In order to tell python that your directory is a package, we need an __init__.py file that has the same name as the application itself.
+        
+        * The __init__.py runs internally(even before the run.py is executed, more like a static method that executes on load) when the run.py is executed. run.py only contains the main function.
+12. User Authentication:
+    Hash passwords: flask-bcrypt -> everytime genereate_password_hash is run, it generates a different hash. We need another method, checkpassword that checks for the generated password with that of the user.
+        >>> from flask_bcrypt import Bcrypt
+        >>> bcrypt = Bcrypt()
+        >>> bcrypt.generate_password_hash('testing')
+                b'$2b$12$V2vBw7.ju0Og4JlGPc5i/O3zPHdwuJ7/erskYGISiI2cpHiwyzlEe'
+        >>> bcrypt.generate_password_hash('testing').decode('utf-8')
+                '$2b$12$OmGqTnEzn8FWolmasmcnV.c13AAwVgS5ZZyTznvxpcu7/2RFbkLWe'
+        >>> hashed_pw = bcrypt.generate_password_hash('testing').decode('utf-8')
+        >>> bcrypt.check_password_hash(hashed_pw, 'password')
+        False
+        >>> bcrypt.check_password_hash(hashed_pw, 'testing') 
+        True
 
+    import and initialize bcrypt in __init__.py
+
+13. Be very careful with the debugger mode when working on confidential projects. any flask error can provide an easy entry point for someone to view and edit the code using the web application debugger pin.
+14. sqlalchemy.exc.IntegrityError
+        caused when the username already exists in the database.
+        better to add form validators to check for duplicate entries.
+
+15. Handled registration errors using customized validators in the forms.py. For login, there is login_manager library (flask-login extension) that handles all te login related issues.
+16. Login Manager:
+    import and initialize login_manager in __init__.py
+    - we add some functionality in our database models and this will handle all the sessions in the background for us.
+    - create function (load_user) with decorator called user_loader - for reloading the user from user id stored in the session.
+    - this decorator expects User model to have certain attributes(3) and methods(1) - isAuthenticated, isActive, isAnonymous, get_id(). The extension provides us with a class that we can inherit from that will add all these attributes and methods for us.
+    -import class(UserMixin) from flask_login, change the routes file to getthe login checks.
+
+17. If already logged in, the login and register links must not work. Can be handled using current_user from flask_login. create logout route.
+18. In order to make the user login before accessing content, we can leverage login_required in flask_login package. Use this decorator in routes.py. But the login_manager needs to know what function must be called when the control hits the login_required decorator, so specify that function in init.py.
+19. next_page = request.args.get('next')
+    args is a dictionary but if we access args[keys] then it will throw error if the key is not found. So use args.get() because this returns None if the key does not exist in the dictionary.
+
+
+
+
+
+
+
+*******pip freeze > requirements.txt*******
