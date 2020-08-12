@@ -6,6 +6,6 @@ Web application development using Flask
 3. User authentication and session management
 
 ## Steps to run the project:
-1. Install necessary packages
-2. Run command in terminal:
+1. Install necessary packages as provided in requirements.txt
+2. Run command in terminal: <br/>
     python run.py
