@@ -1,5 +1,5 @@
 # FlaskBlog
-Web application development using Flask
+Web application development using Flask.
 ### Included Features: <br/>
 1. Forms and Form Handlers <br/>
 2. Database connectivity - SQLite with SQLAlchemy ORM <br/>
