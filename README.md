@@ -1,4 +1,4 @@
-# FlaskBlog
+# TechiesTown - a Flask Blog for tech bloggers
 Web application development using Flask.
 ### Included Features: <br/>
 1. Forms and Form Handlers <br/>
