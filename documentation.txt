@@ -218,7 +218,16 @@ After restructuring code into packages, to run the application,
     also made changes to the forms.py to include the image field in the userAccount form.
     
 
+21. create/update/delete a post
+    - create_post.html + new post route in routes.py and PostForm in forms.py + link to the page in Navigation bar in layout.html
 
+    post.date_posted.strftime('%Y-%m-%d')
+    Without the strftime formatting, the date_posted field was the datetime plus timestamp. So we convert it to only year-month-date format.
 
+    for a user to be able to fetch a particular post, create a route to accept the id number and fetch it from the database. ( feature provided by flask for a user to create variables within actual routes)
+    @app.route("/post/<post_id>) -> /post/1 navigates to post1. Can make the type more specific. Using, @app.route("/post/<int:post_id">)
+
+    making updates and deleting a post mus not be an accident, so we'll include those in the single template for the user to be able to cross verify.
+    delete operation is pretty interesting with the modal. After the user clicks on delete, the modal delete botton hits the delete_post route and we delete the post from the database.
 
 *******pip freeze > requirements.txt*******
