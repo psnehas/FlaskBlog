@@ -230,4 +230,7 @@ After restructuring code into packages, to run the application,
     making updates and deleting a post mus not be an accident, so we'll include those in the single template for the user to be able to cross verify.
     delete operation is pretty interesting with the modal. After the user clicks on delete, the modal delete botton hits the delete_post route and we delete the post from the database.
 
+22. Pagination + sort the posts from newest to oldest
+    
+
 *******pip freeze > requirements.txt*******
