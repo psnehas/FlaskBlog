@@ -231,6 +231,8 @@ After restructuring code into packages, to run the application,
     delete operation is pretty interesting with the modal. After the user clicks on delete, the modal delete botton hits the delete_post route and we delete the post from the database.
 
 22. Pagination + sort the posts from newest to oldest
+
+
     
 
 *******pip freeze > requirements.txt*******
