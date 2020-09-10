@@ -242,8 +242,8 @@ After restructuring code into packages, to run the application,
     need to modify the query to reorder. connecting the query, ordering by desc before paginating.
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page, per_page = 5)
 
--->> when clicked for a specific user, returns the total posts byt that user, provides pagination only for that user's posts and also sorts the posts in descending order on date_posted.
-
+--> when clicked for a specific user, returns the total posts byt that user, provides pagination only for that user's posts and also sorts the posts in descending order on date_posted.
+    in order to route to the user's posts page when clicked on the username, currently we had to change urls on 3 templates user_posts, home and display_post. This is not a good practice and needs to be modified at a later point.
 
     
 **** https://www.youtube.com/watch?v=jTiyt6W1Qpo for flask sqlalchemy explanation ****
