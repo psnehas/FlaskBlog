@@ -231,8 +231,20 @@ After restructuring code into packages, to run the application,
     delete operation is pretty interesting with the modal. After the user clicks on delete, the modal delete botton hits the delete_post route and we delete the post from the database.
 
 22. Pagination + sort the posts from newest to oldest
+    -->> hurray created first script to load posts using json file.
+
+    per_page argument determines the number of posts that are to be displayed on every page.
+    iter_pages -> used to iterate over the pages (like a navigator)
+        has a lot of parameters that let us define the number of pages to display, like only have "prev, current and next" or have "start, .. prev, current, next, .. end".
+        right_current = 2 because this also includes the current page.
+
+23. To obtain the newest posts on top and the older posts towards the last pages.
+    need to modify the query to reorder. connecting the query, ordering by desc before paginating.
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page, per_page = 5)
+
+-->> when clicked for a specific user, returns the total posts byt that user, provides pagination only for that user's posts and also sorts the posts in descending order on date_posted.
 
 
     
-
+**** https://www.youtube.com/watch?v=jTiyt6W1Qpo for flask sqlalchemy explanation ****
 *******pip freeze > requirements.txt*******
