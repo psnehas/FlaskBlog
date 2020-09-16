@@ -9,5 +9,7 @@ Web application development using Flask.
 
 ## Steps to run the project:
 1. Install necessary packages as provided in requirements.txt
+2. To activate the virtual environment type in terminal:
+    venv/Scripts/activate
 2. Run command in terminal: <br/>
     python run.py

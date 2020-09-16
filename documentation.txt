@@ -245,6 +245,22 @@ After restructuring code into packages, to run the application,
 --> when clicked for a specific user, returns the total posts byt that user, provides pagination only for that user's posts and also sorts the posts in descending order on date_posted.
     in order to route to the user's posts page when clicked on the username, currently we had to change urls on 3 templates user_posts, home and display_post. This is not a good practice and needs to be modified at a later point.
 
+
+24. Email and Password reset:
+    email to allow users to reset their password. To do this, we have to create a secure time-sensitive token to ensure only a specific user with access to user's email address can request for password reset.
+    In order to generate time-sensitive token, we use its-dangerous package that was installed with Flask.
+
+    >>> from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+    >>> s = Serializer('secret', 30)
+    >>> token = s.dumps({'user_id':1}).decode('utf-8')
+    >>> token
+    'eyJhbGciOiJIUzUxMiIsImlhdCI6MTYwMDIzNDQzMSwiZXhwIjoxNjAwMjM0NDYxfQ.eyJ1c2VyX2lkIjoxfQ.KEc0tIL1CONXcRFuT9_Ob0MEuY9sq1RK2aSLt30kNQBtIHX2ACrS2EY2ae0aV88u7B6yI94cnWHOSRze79Mp-g'
+    >>> s.loads(token)
+        {'user_id': 1}
+
+    So the changes must be maade in the models.py file - created function that generates the reset token.
+    
+
     
 **** https://www.youtube.com/watch?v=jTiyt6W1Qpo for flask sqlalchemy explanation ****
 *******pip freeze > requirements.txt*******
