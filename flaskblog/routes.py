@@ -5,7 +5,6 @@ from flaskblog.models import User, Post
 from flask_login import login_user,current_user,logout_user,login_required
 from flask_mail import Message
 import secrets
-import os
 from PIL import Image
 
 
@@ -152,7 +151,7 @@ def user_posts(username):
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('Password Reset Request', sender = 'donotreply@demo.com', recipients = [user.email])
+    msg = Message('Password Reset Request', sender = 'donotreply@demo.com', recipients = [user.email]) #why sender not donotreply@demo.com in the email?
     msg.body = f''' To reset your password, visit the following link: 
     {url_for('reset_token', token=token, _external=True)}
 
