@@ -265,5 +265,13 @@ After restructuring code into packages, to run the application,
     Reason: in order to get absolute URL rather than relative URL. Because relative URL's are fine within our application, coz that's what our application normally returns, but the link in the email needs to be full domain. 
     Depending on the size of the email, we can use Jinja2 templates to piece these messages together. 
     
+
+Faced errors:
+1. smtp error: google does not allow us to login from less secure applications. So we have to enable that for the recipient email first.
+stackoverflow : https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-gmail-smtp
+
+2. syntactical errors, used confirm_password instead of confirmPassword in reset_token.html
+                        wrong placement of the statement that sets current_user.image_file = picture_file. Had written it outside the if statement, leading to variable used before initialization error.
+
 **** https://www.youtube.com/watch?v=jTiyt6W1Qpo for flask sqlalchemy explanation ****
 *******pip freeze > requirements.txt*******

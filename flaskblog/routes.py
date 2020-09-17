@@ -187,5 +187,4 @@ def reset_token(token):
         db.session.commit()
         flash(f'Your password has been modified. You can now login','success')
         return redirect(url_for('login'))
-    return render_template('register.html', title="Register", form= form)
     return render_template('reset_token.html', title="Reset Password", form=form)
