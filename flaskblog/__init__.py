@@ -17,8 +17,10 @@ login_manager.login_message_category = 'info' #adds bootstrap info bar arounnd t
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-
+app.config['MAIL_USERNAME'] = 'a.test.flask'
+app.config['MAIL_PASSWORD'] = 'testflask'
 # app.config['MAIL_USERNAME'] = os.environment.get('EMAIL_USER')
 # app.config['MAIL_PASSWORD'] = os.environment.get('EMAIL_PASSWORD')
 
+mail = Mail(app)
 from flaskblog import routes #this import statement is written here after db initialization to avoid circular routes.
