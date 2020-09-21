@@ -140,3 +140,10 @@ cython_debug/
 
 # vscode
 .vscode/
+
+
+
+
+# MAIL_USERNAME = 'a.test.flask@gmail.com'
+# MAIL_PASSWORD = 'testflask'
+# SECRET_KEY = '5429f57bf5529f17c206459d29daef8c'

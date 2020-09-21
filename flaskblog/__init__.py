@@ -7,25 +7,35 @@ from flaskblog.config import Config
 
 
 
-app = Flask(__name__)
-app.config.from_object(Config)
 
-db = SQLAlchemy(app) #instantiates the database 
-bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
+
+db = SQLAlchemy() #instantiates the database 
+bcrypt = Bcrypt()
+login_manager = LoginManager()
 login_manager.login_view = 'users.login' #this login is the name of the function under route decorator
 login_manager.login_message_category = 'info' #adds bootstrap info bar arounnd the login message
 
 
-mail = Mail(app)
+mail = Mail()
 
 
-from flaskblog.users.routes import users
-from flaskblog.posts.routes import posts
-from flaskblog.main.routes import main
-
-app.register_blueprint(users)
-app.register_blueprint(posts)
-app.register_blueprint(main)
 
 # from flaskblog import routes this import statement is written here after db initialization to avoid circular routes. No longer valid after blueprint
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+    
+    from flaskblog.users.routes import users
+    from flaskblog.posts.routes import posts
+    from flaskblog.main.routes import main
+    app.register_blueprint(users)
+    app.register_blueprint(posts)
+    app.register_blueprint(main)
+
+    return app

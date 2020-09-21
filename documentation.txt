@@ -290,8 +290,15 @@ put all the config items into a config file.
 then move sensitive information like email, password, secret key etc into env variables.
 For windows, go to control panel -> systems and security -> systems -> advanced system settings -> environment variables -> new -> (add key and value) -> OK
 
-- move creation of application into function -> 
+## having difficulty with the database when set in env variable.
 
+
+- move creation of application into function -> 
+create_app function to create an instance of the application. all the initialization moved into the create_app. 
+Changed imports that were importing app from flaskblog and instead performed an import from flask itself using from flask import current_app.
+I didn't want to change app in all the files to current_app, so owing to the laziness, I renamed the instance as app. (from flask import current_app as app)
+
+In order to make minimal changes to run.py file, we call the create_app() function and assign it to app variable. 
 
 **** https://www.youtube.com/watch?v=jTiyt6W1Qpo for flask sqlalchemy explanation ****
 *******pip freeze > requirements.txt*******
