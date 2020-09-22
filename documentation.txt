@@ -278,27 +278,33 @@ stackoverflow : https://stackoverflow.com/questions/16512592/login-credentials-n
     - to modularize the application.
     - moving creation of application to a function will allow us to create different instances of the application which is extremely useful if we were to create 2 different applications for testing and production. => this is called application factory.
 
-1. Splitting functions in routes.py into users, posts and the remaining /home and other routes into main directory. In order to make these directories as packages, we need __init__.py in each of these folders even if there is no code within those files. This is to let python know that the current folders are packages.
-2. Splitting forms, routes into users and remaining save_picture and stuff under users utils.py
-3. Blueprint class from flask and create instance. Need to pass __name__ 
-** in the main __init__.py of the application we are creating an instance of the flask application using app = Flask(__name__) but now, we will no longer be using the global app initialization.. Instead we will be creating routes specifically for the user's blueprint and then register these routes with the application at a later point of time.
+    1. Splitting functions in routes.py into users, posts and the remaining /home and other routes into main directory. In order to make these directories as packages, we need __init__.py in each of these folders even if there is no code within those files. This is to let python know that the current folders are packages.
+    2. Splitting forms, routes into users and remaining save_picture and stuff under users utils.py
+    3. Blueprint class from flask and create instance. Need to pass __name__ 
+    ** in the main __init__.py of the application we are creating an instance of the flask application using app = Flask(__name__) but now, we will no longer be using the global app initialization.. Instead we will be creating routes specifically for the user's blueprint and then register these routes with the application at a later point of time.
 
-* changed all url_for links to include their respective file names. Like display_post to posts.display_post, update_post to users.update_post, home to main.home and so on.
-* not to forget, in the main init.py of the application, login route also needs to be modified to users.login
+    * changed all url_for links to include their respective file names. Like display_post to posts.display_post, update_post to users.update_post, home to main.home and so on.
+    * not to forget, in the main init.py of the application, login route also needs to be modified to users.login
 
-put all the config items into a config file.
-then move sensitive information like email, password, secret key etc into env variables.
-For windows, go to control panel -> systems and security -> systems -> advanced system settings -> environment variables -> new -> (add key and value) -> OK
+    put all the config items into a config file.
+    then move sensitive information like email, password, secret key etc into env variables.
+    For windows, go to control panel -> systems and security -> systems -> advanced system settings -> environment variables -> new -> (add key and value) -> OK
 
-## having difficulty with the database when set in env variable.
+    ## having difficulty with the database when set in env variable.
 
 
-- move creation of application into function -> 
-create_app function to create an instance of the application. all the initialization moved into the create_app. 
-Changed imports that were importing app from flaskblog and instead performed an import from flask itself using from flask import current_app.
-I didn't want to change app in all the files to current_app, so owing to the laziness, I renamed the instance as app. (from flask import current_app as app)
+    - move creation of application into function -> 
+    create_app function to create an instance of the application. all the initialization moved into the create_app. 
+    Changed imports that were importing app from flaskblog and instead performed an import from flask itself using from flask import current_app.
+    I didn't want to change app in all the files to current_app, so owing to the laziness, I renamed the instance as app. (from flask import current_app as app)
 
-In order to make minimal changes to run.py file, we call the create_app() function and assign it to app variable. 
+    In order to make minimal changes to run.py file, we call the create_app() function and assign it to app variable. 
+
+26. CUSTOM ERROR PAGES and adding more blueprints::
+    create error package and handlers.py within the package for all error handlers.
+    redirect error as if that is a landing page using render_template() - pass in a subdirectory under templates directory called errors that holds various error templates. In flask you can return a second value that is the status code and the default is 200. This has a second value of 404 which is a http status code to let the users know the correct error response.
+    
+
 
 **** https://www.youtube.com/watch?v=jTiyt6W1Qpo for flask sqlalchemy explanation ****
 *******pip freeze > requirements.txt*******
