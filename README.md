@@ -5,7 +5,10 @@ Web application development using Flask.
 2. Database connectivity - SQLite with SQLAlchemy ORM <br/>
 3. User authentication and session management <br/>
 4. Pagination <br/>
-5. User posts sorting - "newest first"
+5. User posts sorting - "newest first" <br/>
+6. Reset password using verification email <br/>
+7. Custom error pages
+
 
 
 ## Steps to run the project:
